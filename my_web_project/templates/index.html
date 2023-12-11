@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Form</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <h1>Simple Form</h1>
+    <form action="/" method="post" onsubmit="return validateForm()">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name"><br><br>
+        
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email"><br><br>
+        
+        <input type="submit" value="Submit">
+    </form>
+
+    <h2>Submitted Data:</h2>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+        </tr>
+        {% if submitted_data %}
+        <tr>
+            <td>{{ submitted_data['name'] }}</td>
+            <td>{{ submitted_data['email'] }}</td>
+        </tr>
+        {% endif %}
+    </table>
+</body>
+</html>
