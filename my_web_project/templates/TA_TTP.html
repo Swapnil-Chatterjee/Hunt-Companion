@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Subpage</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <h1>Threat Actor {{actor_name}} TTPs</h1>
+    <!-- Display details of the specific threat actor -->
+    <table>
+        <thead>
+            <tr>
+                <th>TTP ID</th>
+                <th>TTP Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ttp in all_ttps %}
+                <tr>
+                    <td>{{ ttp['id'] }}</td>
+                    <td>{{ ttp['name'] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <!-- Include other details fetched for the specific threat actor -->
+    <p><a href="/">Go back to Home Page</a></p>
+</body>
+</html>

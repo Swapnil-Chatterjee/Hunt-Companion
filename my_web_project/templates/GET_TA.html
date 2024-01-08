@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Threat Actors</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <h1>Subpage 1</h1>
+    <p>This is Subpage 1.</p>
+    <h1>Simple Form</h1>
+    <form action="/threat_actors" method="post" >
+        <!-- onsubmit="return validateForm()" -->
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name"><br><br>
+        
+        <label for="description">Description:</label>
+        <input type="text" id="description" name="description"><br><br>
+        
+        <label for="source_region">Source Region:</label>
+        <input type="text" id="source_region" name="source_region"><br><br>
+        
+        <label for="targeted_industry">Targeted Industry:</label>
+        <input type="text" id="targeted_industry" name="targeted_industry"><br><br>
+        
+        <label for="targeted_region">Targeted Region:</label>
+        <input type="text" id="targeted_region" name="targeted_region"><br><br>
+
+        <label for="order">Order By:</label><br>
+        <select id="order" name="order">
+            <option value="first_seen_date">First Seen Date</option>
+            <option value="last_modification_date">Last Modification Date</option>
+            <option value="last_seen_date">Last Seen Date</option>
+            <option value="related_entities_count">Related Entities Count</option>
+        </select><br><br>
+
+        <input type="submit" value="Submit">
+    </form>
+
+    <h2>Submitted Data:</h2>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Source Region</th>
+            <th>Targeted Industry</th>
+            <th>Targeted Region</th>
+            <th>Order</th>
+        </tr>
+        {% if submitted_data %}
+        <tr>
+            <td>{{ submitted_data['name'] }}</td>
+            <td>{{ submitted_data['description'] }}</td>
+            <td>{{ submitted_data['source_region'] }}</td>
+            <td>{{ submitted_data['targeted_industry'] }}</td>
+            <td>{{ submitted_data['targeted_region'] }}</td>
+            <td>{{ submitted_data['order'] }}</td>            
+        </tr>
+        {% endif %}
+    </table>
+        <h1>Threat Actors Information</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>ID</th>
+                <th>Description</th>
+                <th>Targeted Industries</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for actor in threat_actors %}
+                <tr>
+                    <td><a href="/threat_actor/{{ actor['id'] }}&{{ actor['name'] }}">{{ actor['name'] }}</a></td>
+                    <td>{{ actor['id'] }}</td>
+                    <td>{{ actor['description'] }}</td>
+                    <td>{{ actor['targeted_industries'] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <p><a href="/">Go back to Home Page</a></p>
+</body>
+</html>
