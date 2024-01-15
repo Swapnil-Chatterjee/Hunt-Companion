@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Subpage</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    {% if rule %}
+        <h1>The YML Rule</h1>
+         <h5>File Name- {{ filename }}<br>Rule- <br></h5>
+        <pre>{{ rule }}</pre>
+    {% endif %}
+    <p><a href="/">Go back to Home Page</a></p>
+</body>
+</html>

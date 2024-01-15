@@ -6,25 +6,25 @@
 </head>
 <body>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
-    <h1>Threat Actor {{actor_name}} TTPs</h1>
+    <h1>YML Results for {{tech_id}}</h1>
     <!-- Display details of the specific threat actor -->
     <table>
         <thead>
             <tr>
-                <th>TTP ID</th>
-                <th>TTP Name</th>
+                <th>S. No.</th>
+                <th>Rule File</th>
             </tr>
         </thead>
         <tbody>
-            {% for ttp in all_ttps %}
+            {% for name in matching_files %}
                 <tr>
-                    <td><a href="/search_by_id/{{ ttp['id'] }}">{{ ttp['id'] }}</a></td>
-                    <td>{{ ttp['name'] }}</td>
+                    <td>{{ loop.index }}</td>
+                    <td><a href="{{ url_for('rules_viewer', filename=name) }}">{{ name }}</a></td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
-    <!-- Include other details fetched for the specific threat actor -->
+    
     <p><a href="/">Go back to Home Page</a></p>
 </body>
 </html>

@@ -6,20 +6,21 @@
 </head>
 <body>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
-    
+        <h2>Hunt Companion</h2>
+        {% if collections %}   
         <!-- Display VirusTotal collections -->
         <h2>VirusTotal Collections:</h2>
         <ul>
-            {% if collections %}
                 {% for collection in collections['data'] %}
                     <li>{{ collection['id'] }}</li>
                 {% endfor %}
             {% else %}
                 <li>No collections found.</li>
-            {% endif %}
+            
         </ul>
-    <p><a href="/threat_actors">Go to Subpage 1</a></p>
+        {% endif %}
+    <p><a href="/threat_actors">Search TA by filters</a></p>
     <!-- <p><a href="/subpage2">Go to Subpage 2</a></p> -->
-    <p><a href="/subpage3">Go to Subpage 3</a></p>
+    <!-- <p><a href="/subpage3">Go to Subpage 3</a></p> -->
 </body>
 </html>
