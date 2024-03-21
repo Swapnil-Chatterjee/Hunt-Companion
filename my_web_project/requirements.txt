@@ -1,0 +1,9 @@
+flask
+glob
+os
+sigma-cli
+sigma.backends.microsoft365defender
+sigma.rule
+subprocess
+requests
+yaml

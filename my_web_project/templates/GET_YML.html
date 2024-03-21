@@ -19,7 +19,9 @@
             {% for name in matching_files %}
                 <tr>
                     <td>{{ loop.index }}</td>
-                    <td><a href="{{ url_for('rules_viewer', filename=name) }}">{{ name }}</a></td>
+                    <td>{{ name }}</td>
+                    <td><a href="{{ url_for('rules_viewer', filename=name) }}"><input type="button" value="SIGMA"></a></td>
+                    <td><a href="{{ url_for('converter', filename=name) }}"><input type="button" value="Convert"></a></td>
                 </tr>
             {% endfor %}
         </tbody>

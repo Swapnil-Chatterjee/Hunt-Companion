@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request
-import requests, os, glob, yaml, urllib.parse
+import requests, os, glob, yaml, urllib.parse, subprocess 
+from sigma.rule import SigmaRule
+from sigma.backends.microsoft365defender import Microsoft365DefenderBackend
 from config import API_KEY, DIRECTORY_PATH
 app = Flask(__name__)
 
@@ -172,7 +174,33 @@ def rules_viewer(filename):
         print("Exception:", str(e))
         # Redirect to GET request to avoid resubmission on page refresh
         return render_template('RULES_VIEW.html')
-    
+
+@app.route('/converter/<path:filename>')
+def converter(filename):
+    try:
+        # Load the Sigma rule from the file
+        with open(filename, 'r') as file:
+            sigma_rule_content = file.read()
+        sigma_rule = SigmaRule.from_yaml(sigma_rule_content)
+
+        # Logic to add backend and covert --KQL
+        m365def_backend = Microsoft365DefenderBackend()
+        kql_rule=m365def_backend.convert_rule(sigma_rule)[0]
+        
+        # Command to run sigma-cli --SPL
+        command = f'sigma convert -t splunk --without-pipeline "{filename}"'
+        result = subprocess.run(command, shell=True, capture_output=True, text=True)
+        if result.returncode == 0:
+            spl_rule= result.stdout
+        else:
+            raise Exception(f"sigma-cli failed: {result.stderr}")
+
+        return render_template('CNVRTD_VIEW.html', title=sigma_rule.title, spl_rule=spl_rule,kql_rule=kql_rule)
+
+    except Exception as e:
+        print("Exception:", str(e))
+        # Redirect to GET request to avoid resubmission on page refresh
+        return render_template('CNVRTD_VIEW.html', title=sigma_rule.title, spl_rule=spl_rule,kql_rule=kql_rule)
 
 if __name__ == '__main__':
     app.run(debug=True)

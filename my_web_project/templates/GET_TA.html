@@ -6,25 +6,23 @@
 </head>
 <body>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
-    <h1>Subpage 1</h1>
-    <p>This is Subpage 1.</p>
-    <h1>Simple Form</h1>
-    <form action="/threat_actors" method="post" >
+    <h1>THREAT ACTORS</h1>
+    <form action="/threat_actors" method="post" class="flex-container" >
         <!-- onsubmit="return validateForm()" -->
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name"><br><br>
+        <!-- <label for="name">Name:</label> -->
+        <input type="text" id="name" name="name" placeholder="Type name here"><br><br>
         
-        <label for="description">Description:</label>
-        <input type="text" id="description" name="description"><br><br>
+        <!-- <label for="description">Description:</label> -->
+        <input type="text" id="description" name="description" placeholder="Type description here"><br><br>
         
-        <label for="source_region">Source Region:</label>
-        <input type="text" id="source_region" name="source_region"><br><br>
+        <!-- <label for="source_region">Source Region:</label> -->
+        <input type="text" id="source_region" name="source_region" placeholder="Type source region here"><br><br>
         
-        <label for="targeted_industry">Targeted Industry:</label>
-        <input type="text" id="targeted_industry" name="targeted_industry"><br><br>
+        <!-- <label for="targeted_industry">Targeted Industry:</label> -->
+        <input type="text" id="targeted_industry" name="targeted_industry" placeholder="Type targeted industry here"><br><br>
         
-        <label for="targeted_region">Targeted Region:</label>
-        <input type="text" id="targeted_region" name="targeted_region"><br><br>
+        <!-- <label for="targeted_region">Targeted Region:</label> -->
+        <input type="text" id="targeted_region" name="targeted_region" placeholder="Type targeted region here"><br><br>
 
         <label for="order">Order By:</label><br>
         <select id="order" name="order">
@@ -36,7 +34,7 @@
 
         <input type="submit" value="Submit">
     </form>
-
+    {% if submitted_data %}
     <h2>Submitted Data:</h2>
     <table>
         <tr>
@@ -47,7 +45,6 @@
             <th>Targeted Region</th>
             <th>Order</th>
         </tr>
-        {% if submitted_data %}
         <tr>
             <td>{{ submitted_data['name'] }}</td>
             <td>{{ submitted_data['description'] }}</td>
@@ -56,9 +53,10 @@
             <td>{{ submitted_data['targeted_region'] }}</td>
             <td>{{ submitted_data['order'] }}</td>            
         </tr>
-        {% endif %}
     </table>
-        <h1>Threat Actors Information</h1>
+    {% endif %}
+    {% if threat_actors %}
+    <h2>Threat Actors Information</h2>
     <table>
         <thead>
             <tr>
@@ -79,7 +77,9 @@
             {% endfor %}
         </tbody>
     </table>
-    
+    {% else %}
+    <h2>Perform search by applying appropriate filters</h2>
+    {% endif %}  
     <p><a href="/">Go back to Home Page</a></p>
 </body>
 </html>
