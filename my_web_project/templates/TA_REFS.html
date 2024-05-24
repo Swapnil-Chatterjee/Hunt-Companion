@@ -7,24 +7,33 @@
 <body>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
     <h1>Hunt Companion Tool</h1>
-    <h2>Threat Actor {{actor_name}} TTPs</h2>
+    <h2>Threat Actor {{actor_name}} References</h2>
     <!-- Display details of the specific threat actor -->
+    {% if all_refs %}
+    <h3>References</h3>
     <table>
         <thead>
             <tr>
-                <th>TTP ID</th>
-                <th>TTP Name</th>
+                <th>Title</th>
+                <th>Links</th>
+                <th>Author</th>
+                <th>Created</th>
+                
             </tr>
         </thead>
         <tbody>
-            {% for ttp in all_ttps %}
+            {% for ref in all_refs %}
                 <tr>
-                    <td><a href="/search_by_id/{{ ttp['id'] }}">{{ ttp['id'] }}</a></td>
-                    <td>{{ ttp['name'] }}</td>
+                    <td>{{ ref['title'] }}</td>
+                    <td><a href="{{ ref['url'] }}">URL</a></td>
+                    <td>{{ ref['author'] }}</td>
+                    <td>{{ ref['creation_date'] }}</td>
+                    
                 </tr>
             {% endfor %}
         </tbody>
     </table>
+    {% endif %}
     <!-- Include other details fetched for the specific threat actor -->
     <p><a href="/">Go back to Home Page</a></p>
 </body>

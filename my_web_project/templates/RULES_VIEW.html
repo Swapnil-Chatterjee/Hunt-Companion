@@ -6,9 +6,10 @@
 </head>
 <body>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <h1>Hunt Companion Tool</h1>
     {% if rule %}
-        <h1>The YML Rule</h1>
-         <h5>File Name- {{ filename }}<br>Rule- <br></h5>
+        <h2>Sigma Rule</h2>
+         <!-- <h5>File Name- {{ filename }}<br>Rule- <br></h5> -->
         <pre>{{ rule }}</pre>
     {% endif %}
     <p><a href="/">Go back to Home Page</a></p>

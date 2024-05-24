@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Subpage</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <h1>Hunt Companion Tool</h1>
+    <h2>Threat Actor {{actor_name}}</h2>
+    <!-- Display details of the specific threat actor -->
+    {% if ta_info %}
+    <table>
+        <thead>
+            <tr>
+                <th>Description</th>
+                <th>First Seen</th>
+                <th>Last Seen</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ ta_info['description'] }}</td>
+                <td>{{ ta_info['first_seen_date'] }}</td>
+                <td>{{ ta_info['last_seen_date'] }}</td>
+                
+            </tr>
+        
+        </tbody>
+    </table>
+    <h3>Details</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Updated</th>
+                <th>Aliases</th>
+                <th>Suspected Sponsor</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ ta_info['last_modification_date'] }}</td>
+                <td>{{ ta_info['aliases'] }}</td>
+                <td>{{ ta_info['sponsor_region'] }}</td>
+                
+            </tr>
+        
+        </tbody>
+    </table><h3>Targets</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Targeted Industries</th>
+                <th>Targeted Regions</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ ta_info['targeted_industries'] }}</td>
+                <td>{{ ta_info['targeted_regions'] }}</td>
+                
+            </tr>
+        
+        </tbody>
+    </table>
+    {% endif %}
+    <!-- Include other details fetched for the specific threat actor -->
+    <p><a href="/">Go back to Home Page</a></p>
+</body>
+</html>

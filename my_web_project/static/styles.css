@@ -1,7 +1,13 @@
 body {
-   
+            background: linear-gradient(to right, #460073, #b455aa);
             font-family:Helvetica, Arial, sans-serif;
             margin: 20px;
+            color: #ddd;
+        }
+        h1 {
+            text-align: center;
+           
+         
         }
         form {
             margin-bottom: 20px;
@@ -16,6 +22,7 @@ body {
         }
         th {
             background-color: #f2f2f2;
+            color: black;
         }
         .flex-container {
             display: flex;
@@ -25,4 +32,15 @@ body {
         }
         code {
             word-wrap: break-word;
+        }
+        pre {
+            font-size: large;
+            white-space: pre-wrap;       /* Since CSS 2.1 */
+            white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+            white-space: -pre-wrap;      /* Opera 4-6 */
+            white-space: -o-pre-wrap;    /* Opera 7 */
+            word-wrap: break-word;  
+        }
+        a{
+            color:#ddd;
         }

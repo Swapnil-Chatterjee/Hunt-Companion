@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Subpage</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <h1>Hunt Companion Tool</h1>
+    <h2>Threat Actor {{actor_name}} IoCs</h2>
+    <!-- Display details of the specific threat actor -->
+    {% if all_files %}
+    <h3>Files</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>SHA-256</th>
+                <th>Size (Bytes)</th>
+                <th>First Seen</th>
+                <th>Last Seen</th>
+                <th>Submissions</th>
+                <th>Detections</th>
+                <th>Total Vendors</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for ioc in all_files %}
+                <tr>
+                    <td>{{ ioc['sha256'] }}</td>
+                    <td>{{ ioc['size'] }}</td>
+                    <td>{{ ioc['first_seen_itw_date'] }}</td>
+                    <td>{{ ioc['last_submission_date'] }}</td>
+                    <td>{{ ioc['times_submitted'] }}</td>
+                    <td>{{ ioc['positive_hits'] }}</td>
+                    <td>{{ ioc['total'] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+    {% if all_ips %}
+    <h3>IP Adresses</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>IP</th>
+                <th>Country</th>
+                <th>Autonomous System</th>
+                <th>Detections</th>
+                <th>Total Vendors</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for ioc in all_ips %}
+                <tr>
+                    <td>{{ ioc['id'] }}</td>
+                    <td>{{ ioc['country'] }}</td>
+                    <td>{{ ioc['asn'] }} ({{ ioc['as_owner'] }})</td>
+                    <td>{{ ioc['positive_hits'] }}</td>
+                    <td>{{ ioc['total'] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+    {% if all_domains %}
+    <h3>Domains</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Domain</th>
+                <th>Registrar</th>
+                <th>Created</th>
+                <th>Last Updated</th>
+                <th>Detections</th>
+                <th>Total Vendors</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for ioc in all_domains %}
+                <tr>
+                    <td>{{ ioc['id'] }}</td>
+                    <td>{{ ioc['registrar'] }}</td>
+                    <td>{{ ioc['creation_date'] }}</td>
+                    <td>{{ ioc['last_update'] }}</td>
+                    <td>{{ ioc['positive_hits'] }}</td>
+                    <td>{{ ioc['total'] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+    {% if all_urls %}
+    <h3>URLs</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>URLs</th>
+                <th>First Seen</th>
+                <th>Last Seen</th>
+                <th>Submissions</th>
+                <th>Detections</th>
+                <th>Total Vendors</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for ioc in all_urls %}
+                <tr>
+                    <td>{{ ioc['url'] }}</td>
+                    <td>{{ ioc['first_submission_date'] }}</td>
+                    <td>{{ ioc['last_submission_date'] }}</td>
+                    <td>{{ ioc['times_submitted'] }}</td>
+                    <td>{{ ioc['positive_hits'] }}</td>
+                    <td>{{ ioc['total'] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+    
+    <!-- Include other details fetched for the specific threat actor -->
+    <p><a href="/">Go back to Home Page</a></p>
+</body>
+</html>

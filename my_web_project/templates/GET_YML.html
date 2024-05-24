@@ -6,13 +6,15 @@
 </head>
 <body>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
-    <h1>YML Results for {{tech_id}}</h1>
+    <h1>Hunt Companion Tool</h1>
+    <h2>List of Sigma Rules for {{tech_id}}</h2>
     <!-- Display details of the specific threat actor -->
     <table>
         <thead>
             <tr>
                 <th>S. No.</th>
                 <th>Rule File</th>
+                <th colspan="2">Links</th>
             </tr>
         </thead>
         <tbody>

@@ -6,7 +6,8 @@
 </head>
 <body>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
-    <h1>THREAT ACTORS</h1>
+    <h1>Hunt Companion Tool</h1>
+    <h2>THREAT ACTORS</h2>
     <form action="/threat_actors" method="post" class="flex-container" >
         <!-- onsubmit="return validateForm()" -->
         <!-- <label for="name">Name:</label> -->
@@ -16,14 +17,39 @@
         <input type="text" id="description" name="description" placeholder="Type description here"><br><br>
         
         <!-- <label for="source_region">Source Region:</label> -->
-        <input type="text" id="source_region" name="source_region" placeholder="Type source region here"><br><br>
-        
+        <input type="text" list="source_region" name="source_region" placeholder="Type source region here"><br><br>
+        <datalist id="source_region">
+            {% for country in country_names %}
+                <option value="{{ country }}">{{ country }}</option>
+            {% endfor %}
+        </datalist>
         <!-- <label for="targeted_industry">Targeted Industry:</label> -->
-        <input type="text" id="targeted_industry" name="targeted_industry" placeholder="Type targeted industry here"><br><br>
-        
+        <input type="text" list="targeted_industry" name="targeted_industry" placeholder="Type targeted industry here"><br><br>
+        <datalist id="targeted_industry">
+            <option value="Finance">
+            <option value="Manufacturing">
+            <option value="Automotive">
+            <option value="High Tech">
+            <option value="IT">    
+            <option value="Pharmacy">        
+            <option value="Retail">
+            <option value="Telecom">
+            <option value="Transport">
+            <option value="Travel">    
+            <option value="Defense">
+            <option value="Education">
+            <option value="Construction">    
+            <option value="Government">
+            <option value="Administration">    
+        </datalist>
         <!-- <label for="targeted_region">Targeted Region:</label> -->
-        <input type="text" id="targeted_region" name="targeted_region" placeholder="Type targeted region here"><br><br>
-
+        <input list="targeted_region" name="targeted_region" placeholder="Type targeted region here"><br><br>
+        <datalist id="targeted_region">
+            {% for country in country_names %}
+                <option value="{{ country }}">{{ country }}</option>
+            {% endfor %}         
+        </datalist>
+        
         <label for="order">Order By:</label><br>
         <select id="order" name="order">
             <option value="first_seen_date">First Seen Date</option>
@@ -34,6 +60,10 @@
 
         <input type="submit" value="Submit">
     </form>
+    {% if error_message %}
+        <p style="color: red;">
+            <h3>There were no threat actors found with the selected filters.</h3></p>
+    {% endif %}
     {% if submitted_data %}
     <h2>Submitted Data:</h2>
     <table>
@@ -64,21 +94,25 @@
                 <th>ID</th>
                 <th>Description</th>
                 <th>Targeted Industries</th>
+                <th colspan="3">Links</th>
             </tr>
         </thead>
         <tbody>
             {% for actor in threat_actors %}
                 <tr>
-                    <td><a href="/threat_actor/{{ actor['id'] }}&{{ actor['name'] }}">{{ actor['name'] }}</a></td>
+                    <td><a href="/threat_actor/details/{{ actor['id'] }}&{{ actor['name'] }}">{{ actor['name'] }}</a></td>
                     <td>{{ actor['id'] }}</td>
                     <td>{{ actor['description'] }}</td>
                     <td>{{ actor['targeted_industries'] }}</td>
+                    <td><a href="/threat_actor/ttps/{{ actor['id'] }}&{{ actor['name'] }}">TTPs</a></td>
+                    <td><a href="/threat_actor/iocs/{{ actor['id'] }}&{{ actor['name'] }}">IOCs</a></td>
+                    <td><a href="/threat_actor/refs/{{ actor['id'] }}&{{ actor['name'] }}">References</a></td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
     {% else %}
-    <h2>Perform search by applying appropriate filters</h2>
+    <h3>No matches found. Perform search by applying appropriate filters.</h3>
     {% endif %}  
     <p><a href="/">Go back to Home Page</a></p>
 </body>
