@@ -7,6 +7,7 @@ app = Flask(__name__)
 
 url = "https://www.virustotal.com"
 query="/api/v3/threat_actors"
+sub="/api/v3/collections"
 headers = {
             "accept": "application/json",
             "X-Apikey": API_KEY
@@ -74,7 +75,7 @@ def threat_actors():
 
             while next_link:
                 # response = ""
-                # print(url+query)
+                print(next_link)
                 response = requests.get(next_link, headers=headers)
                 response = response.json()
                 # print(response.text)
@@ -179,7 +180,7 @@ def threat_actor_iocs(actor_id, actor_name):
             "type": item.get("type"),
             "country": item["attributes"].get("country"),
             "asn": item["attributes"].get("asn"),
-            "as_owner": item["attributes"].get("as_owner"),
+            "as_source": item["attributes"].get("as_owner"),
             "malicious": item["attributes"]["last_analysis_stats"].get("malicious"),
             "suspicious": item["attributes"]["last_analysis_stats"].get("suspicious"),
             "undetected": item["attributes"]["last_analysis_stats"].get("undetected"),
@@ -282,7 +283,6 @@ def threat_actor_refs(actor_id, actor_name):
   
     return render_template('TA_REFS.html', all_refs=all_refs, actor_name=actor_name)
 
-
 #Render Threat Actor TTPs
 @app.route('/threat_actor/details/<actor_id>&<actor_name>')
 def threat_actor_details(actor_id, actor_name):
@@ -316,6 +316,98 @@ def threat_actor_details(actor_id, actor_name):
         
        
     return render_template('TA_DETAILS.html', ta_info=ta_info, actor_name=actor_name)
+
+# Subpage 1 Display List of Collections as per filters
+@app.route('/collections', methods=['GET', 'POST'])
+def collections():
+    try:
+        country_names = [country.name for country in pycountry.countries]
+        if request.method == 'POST':
+            name = request.form['name']
+            description = request.form['description']
+            owner = request.form['owner']
+            source_region = request.form['source_region']
+            targeted_industry = request.form['targeted_industry']
+            targeted_region = request.form['targeted_region']
+            threat_category = request.form['threat_category']
+            order = request.form['order']
+
+            # Log the submitted data
+            # app.logger.info(f"Submitted Data: Name - {name})
+            error_message = None
+            if targeted_region or source_region:
+                targeted_region=get_country_alpha2(targeted_region)
+                source_region=get_country_alpha2(source_region)
+                if targeted_region==False or source_region==False:
+                    error_message="Error in input region"
+            # Process the submitted data here if needed
+            submitted_data ={'name': name, 'description':description,'owner':owner,'source_region': source_region, 'targeted_industry':targeted_industry, 'targeted_region':targeted_region, 'threat_category':threat_category, 'order':order}
+            
+            # query="/api/v3/collections?filter=targeted_region:US&order=last_seen_date-"
+            
+            filter = "" 
+
+            for key, value in submitted_data.items():
+                if(f"{value}"!=""):
+                    if(filter!=""):
+                        filter+="&"
+                    if(f"{key}"=="order") :
+                        filter += f"{key}={value}"
+                    else:
+                        filter += f"{key}:{value}"
+                
+            if(filter!=""):
+                query1=sub+"?limit=10&filter="+filter+"-"
+            
+            collections = []
+            next_link=url+query1
+
+            while next_link:
+                # response = ""
+                # print(next_link)
+                response = requests.get(next_link, headers=headers)
+                response = response.json()
+                # print(response)
+
+                for collection in response["data"]:
+                    name = collection["attributes"].get("name")
+                    description = collection["attributes"].get("description")
+                    tags = collection["attributes"].get("tags")
+                    link = collection["attributes"].get("link")
+                    files_count = collection["attributes"].get("files_count")
+                    urls_count = collection["attributes"].get("urls_count")
+                    domains_count = collection["attributes"].get("domains_count")
+                    ip_addresses_count = collection["attributes"].get("ip_addresses_count")
+                    references_count = collection["attributes"].get("references_count")
+                    collection_id = collection["id"]
+
+                    if name:
+                        collection_info = {
+                            "name": name,
+                            "description": description,
+                            "tags": tags,
+                            "link":link,
+                            "files_count": files_count,
+                            "urls_count": urls_count,
+                            "domains_count": domains_count,
+                            "ip_addresses_count":ip_addresses_count,
+                            "references_count":references_count,    
+                            "id": collection_id
+                        }
+                    print(collection_info)
+                    collections.append(collection_info)
+                    # print(collections)
+                
+                next_link = None#response.get("links", {}).get("next")
+
+            return render_template('/collections/GET_COL.html', submitted_data=submitted_data,collections=collections, country_names=country_names, error_message=error_message)
+        
+        return render_template('/collections/GET_COL.html', country_names=country_names)
+
+    except Exception as e:    
+        print(e)
+        return render_template('/collections/GET_COL.html', country_names=country_names, error_message=e)
+
 
 
 # Search rule by ID

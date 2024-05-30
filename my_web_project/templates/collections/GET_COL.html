@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Collections</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <h1>Hunt Companion Tool</h1>
+    <h2>Collections</h2>
+    <form action="/collections" method="post" class="flex-container" >
+        <!-- onsubmit="return validateForm()" -->
+        <!-- <label for="name">Name:</label> -->
+        <input type="text" id="name" name="name" placeholder="Type name here"><br><br>
+        
+        <!-- <label for="description">Description:</label> -->
+        <input type="text" id="description" name="description" placeholder="Type description here"><br><br>
+        
+        <!-- <label for="owner">Owner:</label> -->
+        <input type="text" id="owner" name="owner" placeholder="Type owner here"><br><br>
+        
+        <!-- <label for="source_region">Source Region:</label> -->
+        <input type="text" list="source_region" name="source_region" placeholder="Type source region here"><br><br>
+        <datalist id="source_region">
+            {% for country in country_names %}
+                <option value="{{ country }}">{{ country }}</option>
+            {% endfor %}
+        </datalist>
+        <!-- <label for="targeted_industry">Targeted Industry:</label> -->
+        <input type="text" list="targeted_industry" name="targeted_industry" placeholder="Type targeted industry here"><br><br>
+        <datalist id="targeted_industry">
+            <option value="Finance">
+            <option value="Manufacturing">
+            <option value="Automotive">
+            <option value="High Tech">
+            <option value="IT">    
+            <option value="Pharmacy">        
+            <option value="Retail">
+            <option value="Telecom">
+            <option value="Transport">
+            <option value="Travel">    
+            <option value="Defense">
+            <option value="Education">
+            <option value="Construction">    
+            <option value="Government">
+            <option value="Administration">    
+        </datalist>
+        <!-- <label for="targeted_region">Targeted Region:</label> -->
+        <input list="targeted_region" name="targeted_region" placeholder="Type targeted region here"><br><br>
+        <datalist id="targeted_region">
+            {% for country in country_names %}
+                <option value="{{ country }}">{{ country }}</option>
+            {% endfor %}         
+        </datalist>
+        
+        <label for="threat_category">Threat category:</label><br>
+        <select id="threat_category" name="threat_category" >
+            <option value="adware">adware</option>
+            <option value="banker">banker</option>
+            <option value="downloader">downloader</option>
+            <option value="dropper">dropper</option>
+            <option value="fakeav">fakeav</option>
+            <option value="hacktool">hacktool</option>
+            <option value="miner">miner</option>
+            <option value="phishing">phishing</option>
+            <option value="pua">pua</option>
+            <option value="ransomware">ransomware</option>
+            <option value="spyware">spyware</option>
+            <option value="trojan">trojan</option>
+            <option value="virus">virus</option>
+            <option value="worm">worm</option>
+           
+        </select><br><br>
+
+        <label for="order">Order By:</label><br>
+        <select id="order" name="order">
+            <option value="creation_date">Creation Date</option>
+            <option value="creation_day">Creation Day</option>
+            <option value="domains">Domains</option>
+            <option value="files">Files</option>
+            <option value="ip_address">IP Address</option>
+            <option value="last_modification_date">Last modification date</option>
+            <option value="last_modification_day">Last modification day</option>
+            <option value="references">references</option>
+            <option value="urls">urls</option>
+            
+        </select><br><br>
+
+        <input type="submit" value="Submit">
+    </form>
+    {% if error_message %}
+        <p style="color: red;">
+            <h3>There were no collections found with the selected filters.</h3></p>
+    {% endif %}
+    {% if submitted_data %}
+    <h2>Submitted Data:</h2>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Source Region</th>
+            <th>Targeted Industry</th>
+            <th>Targeted Region</th>
+            <th>Order</th>
+        </tr>
+        <tr>
+            <td>{{ submitted_data['name'] }}</td>
+            <td>{{ submitted_data['description'] }}</td>
+            <td>{{ submitted_data['source_region'] }}</td>
+            <td>{{ submitted_data['targeted_industry'] }}</td>
+            <td>{{ submitted_data['targeted_region'] }}</td>
+            <td>{{ submitted_data['order'] }}</td>            
+        </tr>
+    </table>
+    {% endif %}
+    {% if collections %}
+    <h2>Collections Information</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <!-- <th>ID</th> -->
+                <th colspan="5">Description</th>
+                <th>Tags</th>
+                <th>Links</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for collection in collections %}
+                <tr>
+                    <td rowspan="2"><a href="/collection/details/{{ collection['id'] }}&{{ collection['name'] }}">{{ collection['name'] }}</a></td>
+                    <!-- <td>{{ collection['id'] }}</td> -->
+                    <td colspan="5">{{ collection['description'] }}</td>                   
+                    <td>{{ collection['tags'] }}</td>
+                    <td>{{ collection['link'] }}</td>
+                    <!-- <td><a href="/collection/refs/{{ collection['id'] }}&{{ collection['name'] }}">References</a></td> -->
+                </tr>
+                <tr>
+                    <td>Count</td>
+                    <td>Files:{{ collection['files_count'] }}</td>
+                    <td>URLs:{{ collection['urls_count'] }}</td>
+                    <td>IPs:{{ collection['ip_addresses_count'] }}</td>
+                    <td>Domains:{{ collection['domains_count'] }}</td>
+                    <td>References:{{ collection['references_count'] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <h3>No matches found. Perform search by applying appropriate filters.</h3>
+    {% endif %}  
+    <p><a href="/">Go back to Home Page</a></p>
+</body>
+</html>

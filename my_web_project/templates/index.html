@@ -8,20 +8,9 @@
     <script src="{{ url_for('static', filename='script.js') }}"></script>
         <h1>Hunt Companion Tool</h1>
         <h2>Hunt Companion</h2>
-        {% if collections %}   
-        <!-- Display VirusTotal collections -->
-        <h2>VirusTotal Collections:</h2>
-        <ul>
-                {% for collection in collections['data'] %}
-                    <li>{{ collection['id'] }}</li>
-                {% endfor %}
-            {% else %}
-                <li>No collections found.</li>
-            
-        </ul>
-        {% endif %}
+        
     <p><a href="/threat_actors">Search TA by filters</a></p>
-    <!-- <p><a href="/subpage2">Go to Subpage 2</a></p> -->
+    <p><a href="/collections">Go to Subpage 2</a></p>
     <!-- <p><a href="/subpage3">Go to Subpage 3</a></p> -->
 </body>
 </html>
